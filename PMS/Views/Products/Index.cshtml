@@ -1,0 +1,120 @@
+﻿@model List<Model.Models.Products.ProductsGridViewModel>
+@{
+    ViewData["Title"] = "Index";
+    var saveStatus = ViewBag.Status != null && !string.IsNullOrEmpty(ViewBag.Status) ? ViewBag.Status == "error" ? "danger" : "success" : "";
+    var saveMessage = ViewBag.Message;
+}
+@if (!string.IsNullOrEmpty(saveStatus))
+{
+    <div class="alert alert-@saveStatus alert-dismissible fade show text-center" role="alert">
+        <strong>@saveMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="mdl-grid ui-tables">
+
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h1 class="mdl-card__title-text">Products List</h1>
+            </div>
+            @if (Model.Count > 0)
+            {
+
+                <div class="mdl-card__supporting-text no-padding">
+                    <table id="products-table" class="mdl-data-table mdl-js-data-table" data-upgraded=",MaterialDataTable">
+                        <thead>
+                            <tr>
+
+                                <th class="mdl-data-table__cell--non-numeric">#</th>
+                                <th class="mdl-data-table__cell--non-numeric">Product Name</th>
+                                <th class="mdl-data-table__cell--non-numeric">Category</th>
+                                <th class="mdl-data-table__cell--non-numeric">Price</th>
+                                <th class="mdl-data-table__cell--non-numeric">Creation Date</th>
+                                <th class="mdl-data-table__cell--non-numeric">Status</th>
+                                <th class="mdl-data-table__cell--non-numeric">Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var productNb = 0;
+                                var statusColor = "";
+                                var statusText = "";
+                                foreach (var productItem in Model)
+                                {
+                                    statusColor = productItem.Status ? "primary" : "secondary";
+                                    statusText = productItem.Status ? "Active" : "Disabled";
+                                    productNb++;
+                                    <tr data-rowid="@productItem.Product_Id">
+
+                                        <td class="mdl-data-table__cell--non-numeric">@productNb</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@productItem.Product_Name</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@productItem.Category_Name</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@productItem.Price $</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@productItem.Creation_Date</td>
+                                        <td class="mdl-data-table__cell--non-numeric"><span class="label label--mini background-color--@statusColor">@statusText</span> </td>
+                                        <td class="mdl-data-table__cell--non-numeric" style="width:10%;">
+                                            <i class="material-icons editProduct" data-product="@productItem.Product_Id">build</i>
+                                            <i class="material-icons viewProduct" data-product="@productItem.Product_Id" data-toggle="modal" data-target="#productDetailsModal">pageview</i>
+                                            <i class="material-icons deleteProduct" data-product="@productItem.Product_Id">delete forever</i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            }
+            else
+            {
+                <p class="no-data-found">No Data found !</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="../js/Products/Products.js"></script>
+
+<script>
+    @*$(document).ready(function () {
+        $("#products-table").dataTable();
+
+        $("body").on("click", ".editProduct", function () {
+            var productId = $(this).attr("data-product");
+            window.location.href = "/Products/ProductDetails?productId=" + productId;
+        });
+
+        $("body").on("click", ".deleteProduct", function () {
+            var productId = $(this).attr("data-product");
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteProduct", "Products")',
+                data: { "productId": productId },
+                success: function (response) {
+                    $("tr[data-rowid='" + productId + "']").remove();
+                    window.location.href = "@Url.Action("Index", "Products")";
+                }
+             });
+        });
+
+          $("body").on("click", ".viewProduct", function () {
+            var productId = $(this).attr("data-product");
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ViewProduct", "Products")',
+                data: { "productId": productId },
+                success: function (response) {
+                    $("#productDetails-container").html(response);
+                }
+             });
+        });
+    });*@
+</script>

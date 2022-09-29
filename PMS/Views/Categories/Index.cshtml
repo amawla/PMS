@@ -1,0 +1,65 @@
+﻿@model List<Model.Models.Category.CategoryGridViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="mdl-grid ui-tables">
+
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h1 class="mdl-card__title-text">Categories List</h1>
+            </div>
+            @if (Model.Count > 0)
+            {
+
+                <div class="mdl-card__supporting-text no-padding">
+                    <table id="categories-table" class="mdl-data-table mdl-js-data-table" data-upgraded=",MaterialDataTable">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">#</th>
+                                <th class="mdl-data-table__cell--non-numeric">Category Name</th>
+                                <th class="mdl-data-table__cell--non-numeric">Creation Date</th>
+                                <th class="mdl-data-table__cell--non-numeric">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var categoryNb = 0;
+                                var statusColor = "";
+                                var statusText = "";
+                                foreach (var categoryItem in Model)
+                                {
+                                    statusColor = categoryItem.Status ? "primary" : "secondary";
+                                    statusText = categoryItem.Status ? "Active" : "Disabled";
+                                    categoryNb++;
+                                    <tr>
+                                        <td class="mdl-data-table__cell--non-numeric">@categoryNb</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@categoryItem.Category_Name</td>
+                                        <td class="mdl-data-table__cell--non-numeric">@categoryItem.Creation_Date</td>
+                                        <td class="mdl-data-table__cell--non-numeric"><span class="label label--mini background-color--@statusColor">@statusText</span> </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            }
+            else
+            {
+                <p class="no-data-found">No Data found !</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#categories-table").dataTable();
+    });
+</script>

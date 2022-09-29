@@ -1,0 +1,183 @@
+﻿@model Model.Models.Products.ProductsViewModel
+@{
+    ViewData["Title"] = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-dismissible fade show text-center" role="alert" style="display:none" id="saveAlert">
+    <strong id="saveMessage"></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="mdl-grid mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
+
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h5 class="mdl-card__title-text text-color--white">Product Info</h5>
+            </div>
+            <div class="mdl-card__supporting-text">
+
+                <form enctype="multipart/form-data" role="form" id="products-form">
+                    @Html.HiddenFor(m => m.Product.Product_Id, new { @id = "productId" })
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group  padding-0">
+                                @Html.LabelFor(m => m.Product.Category_Id, "Category")
+                                <select name="Product.Category_Id" class="form-control" required id="Product_Category_Id">
+                                    @if (Model.CategoriesList.Count > 0)
+                                    {
+                                        foreach (var categoryItem in Model.CategoriesList)
+                                        {
+                                            if (Model.Product != null && (categoryItem.Category_Id == Model.Product.Category_Id))
+                                            {
+                                                <option value="@categoryItem.Category_Id" selected>@categoryItem.Category_Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@categoryItem.Category_Id">@categoryItem.Category_Name</option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Product.Product_Description, "Product Description")
+                                @Html.TextBoxFor(m => m.Product.Product_Description, "", new { @class = "form-control" })
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Price, "Price")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Price, "", new { @class = "form-control", @type = "number", @min = "0", @required = "required" })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Discount, "Discount")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Discount, "", new { @class = "form-control", @type = "number", @min = "0", @required = "required" })
+                                </div>
+                            </div>
+                            @if (Model.Product == null)
+                            {
+                                <div class="form-group">
+                                    @Html.Label("Upload Images")
+                                    <input type="file" name="files" id="files" class="form-control" multiple />
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Product.Product_Name, "Product Name")
+                                @Html.TextBoxFor(m => m.Product.Product_Name, "", new { @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Qty_In_Stock, "Qty in Stock")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Qty_In_Stock, "", new { @class = "form-control", @type = "number", @min = "0" })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Tax, "Tax")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Tax, "", new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Active_Date_From, "Active Date From")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Active_Date_From, "", new { @class = "form-control", @id = "activeDateFrom" })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(m => m.ProductDetails.Active_Date_To, "Active Date To")
+                                    @Html.TextBoxFor(m => m.ProductDetails.Active_Date_To, "", new { @class = "form-control", @id = "activeDateTo" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    @if (Model.Product == null)
+                    {
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="mdl-grid ui-components">
+                                <!--Toggles-->
+                                <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                                    <div class="mdl-card mdl-shadow--2dp">
+                                        <div class="mdl-card__title">
+                                            <h2 class="mdl-card__title-text">Attributes</h2>
+                                        </div>
+                                        <div class="mdl-card__supporting-text">
+                                            @if (Model.Attributes != null)
+                                            {
+                                                foreach (var attributeItem in Model.Attributes)
+                                                {
+                                                    if (attributeItem.Attribute_Id.ToString().ToUpper() == "A7007CCB-1F85-4A57-A5AB-D7F46B85876E") // colors
+                                                    {
+                                                        <ul class="mdl-list pull-left" id="colors-content" data-attributeid="@attributeItem.Attribute_Id">
+                                                            <li class="mdl-list__item">
+                                                                <span class="text-color--white">@attributeItem.Attribiute_Name</span>
+                                                            </li>
+                                                            <li class="mdl-list__item">
+                                                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-green mdl-js-ripple-effect--ignore-events  is-upgraded" for="switch-1" data-upgraded=",MaterialSwitch,MaterialRipple">
+                                                                    <input type="checkbox" id="switch-1" class="mdl-switch__input" data-color="Green" data-checked="false">
+                                                                    <span class="mdl-switch__label">Green</span>
+                                                                    <div class="mdl-switch__track"></div><div class="mdl-switch__thumb"><span class="mdl-switch__focus-helper"></span></div><span class="mdl-switch__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
+                                                                </label>
+                                                            </li>
+                                                            <li class="mdl-list__item">
+                                                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-orange mdl-js-ripple-effect--ignore-events is-upgraded" for="switch-2" data-upgraded=",MaterialSwitch,MaterialRipple">
+                                                                    <input type="checkbox" id="switch-2" class="mdl-switch__input" data-color="Orange" data-checked="false">
+                                                                    <span class="mdl-switch__label">Orange</span>
+                                                                    <div class="mdl-switch__track"></div><div class="mdl-switch__thumb"><span class="mdl-switch__focus-helper"></span></div><span class="mdl-switch__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple"><span class="mdl-ripple is-animating" style="width: 137.765px; height: 137.765px; transform: translate(-50%, -50%) translate(24px, 24px);"></span></span>
+                                                                </label>
+                                                            </li>
+                                                            <li class="mdl-list__item">
+                                                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-purple mdl-js-ripple-effect--ignore-events  is-upgraded" for="switch-3" data-upgraded=",MaterialSwitch,MaterialRipple">
+                                                                    <input type="checkbox" id="switch-3" class="mdl-switch__input" data-color="Purple" data-checked="false">
+                                                                    <span class="mdl-switch__label">Purple</span>
+                                                                    <div class="mdl-switch__track"></div><div class="mdl-switch__thumb"><span class="mdl-switch__focus-helper"></span></div><span class="mdl-switch__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
+                                                                </label>
+                                                            </li>
+                                                            <li class="mdl-list__item">
+                                                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-red mdl-js-ripple-effect--ignore-events is-upgraded" for="switch-4" data-upgraded=",MaterialSwitch,MaterialRipple">
+                                                                    <input type="checkbox" id="switch-4" class="mdl-switch__input" data-color="red" data-checked="false">
+                                                                    <span class="mdl-switch__label">Red</span>
+                                                                    <div class="mdl-switch__track"></div><div class="mdl-switch__thumb"><span class="mdl-switch__focus-helper"></span></div><span class="mdl-switch__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                    }
+
+                                                }
+                                            }
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    <button class="btn btn-primary col-md-3 pull-right mt-20 mdl-chip color--teal" id="save-product-btn">Save</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="../js/Products/Products.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+</script>

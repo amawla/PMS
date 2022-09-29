@@ -1,0 +1,137 @@
+﻿@model Model.Models.Products.ProductsViewModel
+@using Newtonsoft.Json.Converters;
+@{
+    ViewData["Title"] = "ProductDetailsView";
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                @if (Model.ProductImages != null)
+                {
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                        <ol class="carousel-indicators">
+                            @{
+                                for (int i = 0; i < Model.ProductImages.Count; i++)
+                                {
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                                }
+                            }
+                         
+                        </ol>
+                        <div class="carousel-inner">
+                            @{
+                                var carouselCounter = 0;
+                                for (int y= 0; y<Model.ProductImages.Count; y++)
+                                {
+                                    var imagePath = "../Uploads/Images/Products/" + Model.ProductImages[y].Image_Path;
+
+
+                                    <div class="carousel-item @(y == 0 ? "active" : "")">
+
+
+
+                                        <img src="@imagePath" style="height:400px;width:100%" />
+
+                                    </div>
+                                   
+                                }
+                            }
+
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                                    }
+
+            </div>
+            <div class="col-md-6 productInfo-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="productName text-color--white">@Model.Product.Product_Name</h2>
+                    </div>
+                    <div class="col-md-12 mt-20">
+                        <h2 class="price">
+                            @{
+                                var productDiscount = Model.ProductDetails.Discount != null ? (Model.ProductDetails.Price * Model.ProductDetails.Discount) / 100 : 0;
+                            }
+                            @(Model.ProductDetails.Price - productDiscount)
+
+                            <span class="discount text-color--white">&nbsp;&nbsp;<strike>$ @Model.ProductDetails.Price</strike></span>
+                        </h2>
+                    </div>
+                    <div class="col-md-12 mt-20">
+                        <h4 class="text-color--white">Tax &nbsp;&nbsp;<span class="tax">$@Model.ProductDetails.Tax</span></h4>
+
+                    </div>
+                    <div class="col-md-12 mt-20">
+                        <h4 class="text-color--white">Qty in Stock</h4>
+                        <input type="text" class="form-control qtyInStock" value="@Model.ProductDetails.Qty_In_Stock" readonly />
+                    </div>
+                    @if (Model.ProductDetails.Discount != null && Model.ProductDetails.Discount > 0)
+                    {
+                        <div class="col-md-12 mt-20">
+                            <h4 class="text-color--white">Offer Date</h4>
+                            <h5 class="offerDate">From @Model.ProductDetails.Active_Date_From to @Model.ProductDetails.Active_Date_To</h5>
+                        </div>
+                    }
+
+                    <div class="col-md-12 mt-20">
+                        <h3 class="text-color--white">OverView</h3>
+                        <h5 class="productDescription">@Model.Product.Product_Description</h5>
+                    </div>
+
+                </div>
+
+                @if (Model.ProductAttributes != null)
+                {
+                    <div class="mdl-grid ui-components">
+                        <ul class="mdl-list pull-left">
+                            @foreach (var prodictAttributeItem in Model.ProductAttributes)
+                            {
+                                var productAttribute = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(prodictAttributeItem.Values);
+                                var switchCounter = 0;
+                                <li class="mdl-list__item">
+                                    <h3 class="text-color--white">Colors</h3>
+                                </li>
+                                <li class="mdl-list__item">
+                                    @foreach (var attributeSubItem in productAttribute)
+                                    {
+                                        switchCounter++;
+                                        var switchId = "switch-" + switchCounter;
+                                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-@attributeSubItem.ToLower() mdl-js-ripple-effect--ignore-events  is-upgraded is-checked" for="@switchId" data-upgraded=",MaterialSwitch,MaterialRipple" style="margin-left:15px;margin-right:15px;">
+                                            <input type="checkbox" class="mdl-switch__input" id="@switchId">
+                                            <span class="mdl-switch__label">@attributeSubItem.ToLower()</span>
+                                            <div class="mdl-switch__track"></div><div class="mdl-switch__thumb"><span class="mdl-switch__focus-helper"></span></div><span class="mdl-switch__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
+                                        </label>
+                                    }
+
+                                    
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </div>
+                   
+                }
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+

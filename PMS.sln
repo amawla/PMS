@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS", "PMS\PMS.csproj", "{ADACD0B4-99D3-444C-AE3F-A898CCC23094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{17915C70-5697-4561-9E8D-357A8630F492}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{7D6FA57E-9E5D-4508-A5A7-E2E948DF7F5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADACD0B4-99D3-444C-AE3F-A898CCC23094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADACD0B4-99D3-444C-AE3F-A898CCC23094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADACD0B4-99D3-444C-AE3F-A898CCC23094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADACD0B4-99D3-444C-AE3F-A898CCC23094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17915C70-5697-4561-9E8D-357A8630F492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17915C70-5697-4561-9E8D-357A8630F492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17915C70-5697-4561-9E8D-357A8630F492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17915C70-5697-4561-9E8D-357A8630F492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D6FA57E-9E5D-4508-A5A7-E2E948DF7F5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6FA57E-9E5D-4508-A5A7-E2E948DF7F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6FA57E-9E5D-4508-A5A7-E2E948DF7F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6FA57E-9E5D-4508-A5A7-E2E948DF7F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64B41E0E-B502-49CA-938B-9F85DE818EE8}
+	EndGlobalSection
+EndGlobal
